@@ -20,7 +20,9 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 
 	@Override
 	public SignupResponseEntity createProfile(SignupRequestEntity signupRequestEntity) {
-		
+		LoginSignup signup = SignupMapper.fromRequestEntity(signupRequestEntity);
+		LoginSignup loginSignup = loginSignupRepository.save(signup);
+		return null;
 	}
 
 	@Override

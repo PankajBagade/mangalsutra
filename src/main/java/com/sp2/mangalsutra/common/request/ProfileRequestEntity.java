@@ -1,133 +1,77 @@
-package com.sp2.mangalsutra.common.entities;
-
+package com.sp2.mangalsutra.common.request;
 
 import java.sql.Date;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-
-@Entity
-@Table(name = "profile_master_tbl")
-public class ProfileDetail {
-	@Id
-	@GeneratedValue(generator = "uuid2")
-	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@Column(name = "id", unique = true, insertable = false, updatable = false)
-	@Type(type = "pg-uuid")
-	private UUID id;
+public class ProfileRequestEntity {
 	
-	@OneToOne(mappedBy = "profileDetail")
-    private LoginSignup login;
+    private UUID id;
 	
-	@Column(name = "profile_id")	
 	private String profileId;
 	
-	@Column(name = "first_name")
 	private String firstName;
 	
-	@Column(name = "last_name")
 	private String lastName;
 	
-	@Column(name = "gender")
-	private String gender;
-	
-	@Column(name = "date_of_birth")
-	private Date dob;
-	
-	@Column(name = "email_id")
 	private String emailId;
 	
-	@Column(name = "work_with")
-	private String workWith;
+	private String phoneNumber;
 	
-	@Column(name = "income")
-	private String income;
+	private String gender;
 	
-	@Column(name = "matial_status")
+	private Date  dob;
+
 	private String maritalStaus;
 	
-	@Column(name = "complexion")
-	private String complexion;
-	
-	@Column(name = "height")
-	private String height;
-	
-	@Column(name = "build_type")
-	private String buildType;
-	
-	@Column(name = "location ")
-	private String location;
-	
-	@Column(name = "nationality")
-	private String nationality;
-	
-	@Column(name = "caste")
-	private String caste;
-	
-	@Column(name = "sub_caste")
-	private String subCaste;
-	
-	@Column(name = "religion")
-	private String  religion;
-	
-	@Column(name = "image_path")
 	private String imgPath;
 	
-	@Column(name = "about me")
-	private String aboutMe; 
+	private String workWith;
 	
-	@Column(name = "hobbies")
-	private String hobbies;
+	private String income;
 	
-	@Column(name = "habits")
-	private String habits;
-	
-	@Column(name = "rashi")
-	private String rashi;
-	
-	@Column(name = "mother_tounge")
-	private String motherTounge;
-	
-	@Column(name = "highest_education")
-	private String highestEducation;
-	
-	@Column(name = "physical_disability")
-	private String physicalDisable;
-	
-	@Column(name = "college_name")
-	private String collegeName;
-	
-	@Column(name = "designation")
 	private String designation;
 	
-	@Column(name = "diet")
+	private String complexion;
+	
+	private String height;
+	
+	private String buildType;
+	
+	private String location;
+	
+	private String nationality;
+	
+	private String caste;
+	
+	private String subCaste;
+	
+	private String religion;
+	
+    private String rashi;
+	
+	private String motherTounge;
+	
+	private String aboutMe; 
+	
+	private String hobbies;
+	
+	private String habits;
+	
+	private String highestEducation;
+	
+	private String collegeName;
+	
+	private String physicalDisable;
+	
 	private String diet;
 	
-	@Column(name = "drink_and_smoke")
 	private String drinkSmoke;
 	
-    @Column(name = "request_date")
     private Date requestDate;
 
-    @Column(name = "request_status")
     private String requestStatus;
 
-    @Column(name = "activation_date")
     private Date activationDate;
-    
-    @Column(name = "isProfileActive")
-    private Boolean isProfileActive; 
-
 
 	public UUID getId() {
 		return id;
@@ -135,14 +79,6 @@ public class ProfileDetail {
 
 	public void setId(UUID id) {
 		this.id = id;
-	}
-
-	public LoginSignup getLogin() {
-		return login;
-	}
-
-	public void setLogin(LoginSignup login) {
-		this.login = login;
 	}
 
 	public String getProfileId() {
@@ -169,6 +105,22 @@ public class ProfileDetail {
 		this.lastName = lastName;
 	}
 
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
 	public String getGender() {
 		return gender;
 	}
@@ -185,12 +137,20 @@ public class ProfileDetail {
 		this.dob = dob;
 	}
 
-	public String getEmailId() {
-		return emailId;
+	public String getMaritalStaus() {
+		return maritalStaus;
 	}
 
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
+	public void setMaritalStaus(String maritalStaus) {
+		this.maritalStaus = maritalStaus;
+	}
+
+	public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
 	}
 
 	public String getWorkWith() {
@@ -209,12 +169,12 @@ public class ProfileDetail {
 		this.income = income;
 	}
 
-	public String getMaritalStaus() {
-		return maritalStaus;
+	public String getDesignation() {
+		return designation;
 	}
 
-	public void setMaritalStaus(String maritalStaus) {
-		this.maritalStaus = maritalStaus;
+	public void setDesignation(String designation) {
+		this.designation = designation;
 	}
 
 	public String getComplexion() {
@@ -281,12 +241,20 @@ public class ProfileDetail {
 		this.religion = religion;
 	}
 
-	public String getImgPath() {
-		return imgPath;
+	public String getRashi() {
+		return rashi;
 	}
 
-	public void setImgPath(String imgPath) {
-		this.imgPath = imgPath;
+	public void setRashi(String rashi) {
+		this.rashi = rashi;
+	}
+
+	public String getMotherTounge() {
+		return motherTounge;
+	}
+
+	public void setMotherTounge(String motherTounge) {
+		this.motherTounge = motherTounge;
 	}
 
 	public String getAboutMe() {
@@ -309,24 +277,8 @@ public class ProfileDetail {
 		return habits;
 	}
 
-	public void setHabits(String hobits) {
-		this.habits = hobits;
-	}
-
-	public String getRashi() {
-		return rashi;
-	}
-
-	public void setRashi(String rashi) {
-		this.rashi = rashi;
-	}
-
-	public String getMotherTounge() {
-		return motherTounge;
-	}
-
-	public void setMotherTounge(String motherTounge) {
-		this.motherTounge = motherTounge;
+	public void setHabits(String habits) {
+		this.habits = habits;
 	}
 
 	public String getHighestEducation() {
@@ -337,14 +289,6 @@ public class ProfileDetail {
 		this.highestEducation = highestEducation;
 	}
 
-	public String getPhysicalDisable() {
-		return physicalDisable;
-	}
-
-	public void setPhysicalDisable(String physicalDisable) {
-		this.physicalDisable = physicalDisable;
-	}
-
 	public String getCollegeName() {
 		return collegeName;
 	}
@@ -353,12 +297,12 @@ public class ProfileDetail {
 		this.collegeName = collegeName;
 	}
 
-	public String getDesignation() {
-		return designation;
+	public String getPhysicalDisable() {
+		return physicalDisable;
 	}
 
-	public void setDesignation(String designation) {
-		this.designation = designation;
+	public void setPhysicalDisable(String physicalDisable) {
+		this.physicalDisable = physicalDisable;
 	}
 
 	public String getDiet() {
@@ -400,16 +344,5 @@ public class ProfileDetail {
 	public void setActivationDate(Date activationDate) {
 		this.activationDate = activationDate;
 	}
-
-	public Boolean getIsProfileActive() {
-		return isProfileActive;
-	}
-
-	public void setIsProfileActive(Boolean isProfileActive) {
-		this.isProfileActive = isProfileActive;
-	}
 	
 }
-
-
-

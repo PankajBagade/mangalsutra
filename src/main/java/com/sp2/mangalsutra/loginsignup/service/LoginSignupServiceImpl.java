@@ -2,28 +2,31 @@ package com.sp2.mangalsutra.loginsignup.service;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sp2.mangalsutra.common.entities.LoginSignup;
+import com.sp2.mangalsutra.common.entities.ProfileDetail;
 import com.sp2.mangalsutra.common.repositories.LoginSignupRepository;
+import com.sp2.mangalsutra.common.repositories.ProfileDetailsRepository;
+import com.sp2.mangalsutra.common.request.ProfileRequestEntity;
 import com.sp2.mangalsutra.common.request.SignupRequestEntity;
+import com.sp2.mangalsutra.common.response.ProfileResponseEntity;
 import com.sp2.mangalsutra.common.response.SignupResponseEntity; 
 import com.sp2.mangalsutra.loginsignup.exception.EmailAlreadyExistException;
 import com.sp2.mangalsutra.loginsignup.exception.OtpNotMatchException;
 import com.sp2.mangalsutra.loginsignup.exception.PhoneNumberExistException;
+import com.sp2.mangalsutra.loginsignup.exception.UserNotFound;
+import com.sp2.mangalsutra.loginsignup.mapper.ProfileMapper;
 import com.sp2.mangalsutra.loginsignup.mapper.SignupMapper;
 
 public class LoginSignupServiceImpl implements LoginSignupService{
 	
 	@Autowired
 	LoginSignupRepository loginSignupRepository;
-
-	@Override
-	public SignupResponseEntity createProfile(SignupRequestEntity signupRequestEntity) {
-		LoginSignup signup = SignupMapper.fromRequestEntity(signupRequestEntity);
-		LoginSignup loginSignup = loginSignupRepository.save(signup);
-		return null;
-	}
+	
+	@Autowired
+	ProfileDetailsRepository profileDetailsRepository;
 
 	@Override
 	public LoginSignup isEmailIdExist(String emailId) {
@@ -48,7 +51,7 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 		LoginSignup signupWithOtp = SignupMapper.fromRequestEntity(signupRequestEntity);
 		LoginSignup loginSignup = loginSignupRepository.save(signupWithOtp);
 		loginSignup.setOtp("");
-		if(loginSignup != null){
+		if(loginSignup == null){
 			//throw new ;
 		}
 		return loginSignup;
@@ -63,6 +66,40 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 		return true;
 	}
 	
+	@Override
+	public SignupResponseEntity createProfile(SignupRequestEntity signupRequestEntity) {
+		LoginSignup signup = SignupMapper.fromRequestEntity(signupRequestEntity);
+		LoginSignup response = loginSignupRepository.save(signup);
+		SignupResponseEntity signupResponse = SignupMapper.toResponseEntity(response); 
+		
+		return signupResponse;
+	}
+
+	@Override
+	public ProfileResponseEntity updateProfile(ProfileRequestEntity profileRequestEntity) {
+		ProfileDetail profileDetail = loginSignupRepository.findByProfileId(profileRequestEntity.getProfileId());
+		if(profileDetail == null){
+			throw new UserNotFound("User not found");
+		}
+		ProfileDetail profileUpdated = ProfileMapper.toUpdateDetail(profileDetail,profileRequestEntity);
+		ProfileDetail profileDetails = profileDetailsRepository.save(profileUpdated);
+		ProfileResponseEntity response = ProfileMapper.toResponseEntity(profileDetails);
+	    
+		return response;
+	}
+
+	@Override
+	public ProfileResponseEntity deactivateProfile(String profileId) {
+		ProfileDetail profileDetail =  loginSignupRepository.findByProfileId(profileId);
+		profileDetail.setIsProfileActive(Boolean.FALSE);
+		ProfileDetail updatedPropfile = profileDetailsRepository.save(profileDetail);
+        ProfileResponseEntity response = ProfileMapper.toResponseEntity(updatedPropfile);
+	    
+		return response;
+	}
+	
+	
+
 	
 	
 }

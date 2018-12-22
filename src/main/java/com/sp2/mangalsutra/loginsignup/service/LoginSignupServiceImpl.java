@@ -1,19 +1,23 @@
 package com.sp2.mangalsutra.loginsignup.service;
 
-
-
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 import com.sp2.mangalsutra.common.entities.LoginSignup;
 import com.sp2.mangalsutra.common.entities.ProfileDetail;
 import com.sp2.mangalsutra.common.repositories.LoginSignupRepository;
 import com.sp2.mangalsutra.common.repositories.ProfileDetailsRepository;
+import com.sp2.mangalsutra.common.request.LoginRequestEntity;
 import com.sp2.mangalsutra.common.request.ProfileRequestEntity;
 import com.sp2.mangalsutra.common.request.SignupRequestEntity;
 import com.sp2.mangalsutra.common.response.ProfileResponseEntity;
 import com.sp2.mangalsutra.common.response.SignupResponseEntity; 
 import com.sp2.mangalsutra.loginsignup.exception.EmailAlreadyExistException;
+import com.sp2.mangalsutra.loginsignup.exception.InvalidUserNamePasswordException;
 import com.sp2.mangalsutra.loginsignup.exception.OtpNotMatchException;
 import com.sp2.mangalsutra.loginsignup.exception.PhoneNumberExistException;
 import com.sp2.mangalsutra.loginsignup.exception.UserNotFound;
@@ -27,6 +31,9 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 	
 	@Autowired
 	ProfileDetailsRepository profileDetailsRepository;
+	
+	@Autowired
+	private JavaMailSender sender;
 
 	@Override
 	public LoginSignup isEmailIdExist(String emailId) {
@@ -55,6 +62,28 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 			//throw new ;
 		}
 		return loginSignup;
+	}
+	
+	@Override
+	public String sendOtpViaEmail(String Otp, String emailId) {
+		try{
+			sendEmail(Otp,emailId);
+			return "Email Send Succesfully";
+		}catch(Exception ex){
+			return "Problem while sending email"; 
+		}
+		
+	}
+
+	private void sendEmail(String otp, String emailId) throws MessagingException {
+		MimeMessage message = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        
+        helper.setTo(emailId);
+        helper.setText("Your  OTP is " + otp);
+        helper.setSubject("Otp for registration");
+        
+        sender.send(message);		
 	}
 
 	@Override
@@ -97,9 +126,20 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 	    
 		return response;
 	}
-	
-	
 
-	
+	@Override
+	public LoginSignup validateLoginCredential(LoginRequestEntity loginRequestEntity) {
+		LoginSignup login = loginSignupRepository.findByEmailIdOrPhoneNumber(loginRequestEntity.getEmailIdOrPhoneNumber());
+		if(login != null){
+			if(!login.getPassword().equals(loginRequestEntity.getPassword())){
+				throw new InvalidUserNamePasswordException("Invalid Password");
+			} 
+		}else{
+			throw new InvalidUserNamePasswordException("Invalid UserName");
+		}
+		
+		return login;
+	}
+
 	
 }

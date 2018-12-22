@@ -16,4 +16,6 @@ public interface LoginSignupRepository extends JpaRepository<LoginSignup,UUID>{
 	public LoginSignup findByPhoneNumber(String PhoneNumber);
 	
 	public ProfileDetail findByProfileId(String profileId);
+	
+	public LoginSignup findByEmailIdOrPhoneNumber(String emailIdOrPhoneNumber);
 }

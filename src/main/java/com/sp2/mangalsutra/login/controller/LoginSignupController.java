@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sp2.mangalsutra.common.entities.LoginSignup;
 import com.sp2.mangalsutra.common.repositories.LoginSignupRepository;
+import com.sp2.mangalsutra.common.request.LoginRequestEntity;
 import com.sp2.mangalsutra.common.request.ProfileRequestEntity;
 import com.sp2.mangalsutra.common.request.SignupRequestEntity;
 import com.sp2.mangalsutra.common.response.ProfileResponseEntity;
 import com.sp2.mangalsutra.common.response.SignupResponseEntity; 
 import com.sp2.mangalsutra.common.util.OTPGenrator;
 import com.sp2.mangalsutra.loginsignup.exception.EmailAlreadyExistException;
+import com.sp2.mangalsutra.loginsignup.exception.InvalidUserNamePasswordException;
 import com.sp2.mangalsutra.loginsignup.exception.OtpNotMatchException;
 import com.sp2.mangalsutra.loginsignup.exception.UserNotFound;
 import com.sp2.mangalsutra.loginsignup.service.LoginSignupService;
@@ -42,7 +44,7 @@ public class LoginSignupController {
 		String otp = OTPGenrator.generateOtp();
 		signupRequest.setOtp(otp);
 		loginSignupService.saveOtp(signupRequest);
-		
+		loginSignupService.sendOtpViaEmail(otp, signupRequest.getEmailId());
 		return null;
 	}
 	
@@ -107,6 +109,17 @@ public class LoginSignupController {
 			
 		}
 		return null;
-		
+	}
+	
+	@RequestMapping(value = "login", method = RequestMethod.POST)
+	public ResponseEntity<ProfileResponseEntity> login(@RequestBody LoginRequestEntity loginRequest){
+		try{			
+			LoginSignup loginDetail = loginSignupService.validateLoginCredential(loginRequest);
+		}catch(InvalidUserNamePasswordException ex){
+			
+		}catch(Exception ex){
+			
+		}	
+		return null;
 	}
 }

@@ -16,8 +16,8 @@ public class SignupController {
 	
 	private static final Logger  logger = LoggerFactory.getLogger(SignupController.class);
 	
-	public ResponseEntity<SignupResponseEntity> create(SignupRequestEntity request){
+	/*public ResponseEntity<SignupResponseEntity> create(SignupRequestEntity request){
 		
-	}
+	}*/
 	
 }

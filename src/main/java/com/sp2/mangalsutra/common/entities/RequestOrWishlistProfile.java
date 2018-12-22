@@ -15,7 +15,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "request_queue_tbl")
-public class UnlockProfileRequest implements Serializable {
+public class RequestOrWishlistProfile implements Serializable {
 	
 	@Id
 	@GeneratedValue(generator = "uuid2")
@@ -30,24 +30,13 @@ public class UnlockProfileRequest implements Serializable {
 	@Column(name = "requestee_id")
 	private String requesteeProfileId;
 	
+	@Column(name = "wishlistId")
+	private String wishlistProfileId;
+	
 	@Column(name = "request_date")
 	private Date requestDate;
 	
 	@Column(name = "unlock_status")
 	private String unlockStatus;
 	
-	@Column(name = "unlock_date")
-	private String unlockDate;
-
 }
-
-
-
-/*id uuid NOT NULL,
-requeste_id uuid,
-requestee_id uuid,
-date time with time zone,
-wishlist uuid,
-is_aproved boolean,
-requestDate;
-requestStatus;*/
